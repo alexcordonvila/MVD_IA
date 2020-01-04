@@ -1,7 +1,7 @@
 #pragma once
 #include "includes.h"
 #include <vector>
-
+#include "GraphicsSystem.h"
 struct TGAInfo //stores info about TGA file
 {
 	GLuint width;
@@ -20,5 +20,6 @@ public:
 		std::vector<float>& normals,
 		std::vector<unsigned int>& indices);
 	static GLint parseTexture(std::string filename);
-
+	static bool parseJSONLevel(std::string filename,
+		GraphicsSystem& graphics_system);
 };

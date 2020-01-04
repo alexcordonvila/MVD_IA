@@ -17,6 +17,7 @@ struct Geometry {
 struct Material {
 	std::string name;
 	int shader_id;
+	lm::vec3 ambient;
 	lm::vec3 diffuse;
 	lm::vec3 specular;
 	float specular_gloss;
@@ -25,6 +26,7 @@ struct Material {
 
 	Material() {
 		name = "";
+		ambient = lm::vec3(0.1f, 0.1f, 0.1f);
 		diffuse = lm::vec3(1.0f, 1.0f, 1.0f);
 		specular = lm::vec3(1.0f, 1.0f, 1.0f);
 		diffuse_map = -1;

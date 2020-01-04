@@ -1,5 +1,3 @@
-
-
 #pragma once
 #include "Components.h"
 #include <vector>
@@ -82,7 +80,18 @@ struct EntityComponentStore {
         //return component from vector in tuple
         return get<vector<T>>(components)[comp_index];
     }
-    
+	//return reference to component stored in entity, accessed by name
+	template<typename T>
+	T& getComponentFromEntity(std::string entity_name) {
+		//get entity id
+		const int entity_id = getEntity(entity_name);
+		//get index for type
+		const int type_index = type2int<T>::result;
+		//get index for component
+		const int comp_index = entities[entity_id].components[type_index];
+		//return component from vector in tuple
+		return get<vector<T>>(components)[comp_index];
+	}
     //return id of component in relevant array
     template<typename T>
     int getComponentID(int entity_id) {

@@ -1,7 +1,11 @@
 #include "Parsers.h"
 #include <fstream>
-
+#include "extern.h"
 #include <unordered_map>
+
+#include "rapidjson/document.h"
+#include "rapidjson/istreamwrapper.h"
+
 
 void split(std::string to_split, std::string delim, std::vector<std::string>& result) {
 	size_t last_offset = 0;
@@ -254,4 +258,204 @@ TGAInfo* Parsers::loadTGA(std::string filename)
 	file.close();
 
 	return tgainfo;
+}
+
+
+bool Parsers::parseJSONLevel(std::string filename, GraphicsSystem& graphics_system) {
+	//read json file and stream it into a rapidjson document
+	//see http://rapidjson.org/md_doc_stream.html
+	std::ifstream json_file(filename);
+	rapidjson::IStreamWrapper json_stream(json_file);
+	rapidjson::Document json;
+	json.ParseStream(json_stream);
+	//check if its valid JSON
+	if (json.HasParseError()) std::cerr << "JSON format is not valid!" << std::endl;
+	//check if its a valid scene file
+	if (!json.HasMember("scene")) { std::cerr << "JSON file is incomplete! Needs entry: scene" << std::endl; return false; }
+	if (!json.HasMember("directory")) { std::cerr << "JSON file is incomplete! Needs entry: directory" << std::endl; return false; }
+	if (!json.HasMember("textures")) { std::cerr << "JSON file is incomplete! Needs entry: textures" << std::endl; return false; }
+	if (!json.HasMember("materials")) { std::cerr << "JSON file is incomplete! Needs entry: materials" << std::endl; return false; }
+	if (!json.HasMember("lights")) { std::cerr << "JSON file is incomplete! Needs entry: lights" << std::endl; return false; }
+	if (!json.HasMember("entities")) { std::cerr << "JSON file is incomplete! Needs entry: entities" << std::endl; return false; }
+	if (!json.HasMember("shaders")) { std::cerr << "JSON file is incomplete! Needs entry: shaders" << std::endl; return false; }
+
+
+	printf("Parsing Scene Name = %s\n", json["scene"].GetString());
+
+	std::string data_dir = json["directory"].GetString();
+
+	//dictionaries
+	std::unordered_map<std::string, int> geometries;
+	std::unordered_map<std::string, int> textures;
+	std::unordered_map<std::string, int> materials;
+	std::unordered_map<std::string, std::string> child_parent;
+
+	//geometries
+	for (rapidjson::SizeType i = 0; i < json["geometries"].Size(); i++) {
+		//get values from json
+		std::string name = json["geometries"][i]["name"].GetString();
+		std::string file = json["geometries"][i]["file"].GetString();
+		//load geometry
+		int geom_id = graphics_system.createGeometryFromFile(data_dir + file);
+		//add to dictionary
+		geometries[name] = geom_id;
+	}
+
+	//textures
+	for (rapidjson::SizeType i = 0; i < json["textures"].Size(); i++) {
+		//get values from json
+		std::string name = json["textures"][i]["name"].GetString();
+		std::string file = json["textures"][i]["file"].GetString();
+		//load texture
+		int tex_id = parseTexture(data_dir + file);
+		//add to dictionary
+		textures[name] = tex_id;
+	}
+
+	//shaders
+	for (rapidjson::SizeType i = 0; i < json["shaders"].Size(); i++) {
+		//get values from json
+		std::string name = json["shaders"][i]["name"].GetString();
+		std::string vertex = json["shaders"][i]["vertex"].GetString();
+		std::string fragment = json["shaders"][i]["fragment"].GetString();
+		//load shader
+		graphics_system.loadShader(name, vertex, fragment);
+	}
+
+	//materials
+	for (rapidjson::SizeType i = 0; i < json["materials"].Size(); i++) {
+		//get values from json
+		std::string name = json["materials"][i]["name"].GetString();
+		//create material
+		int mat_id = graphics_system.createMaterial();
+		//shader_id is mandatory
+		graphics_system.getMaterial(mat_id).shader_id = graphics_system.getShaderProgram(json["materials"][i]["shader"].GetString());
+
+		//optional properties
+		//diffuse texture
+		if (json["materials"][i].HasMember("diffuse_texture")) {
+			std::string diffuse = json["materials"][i]["diffuse_texture"].GetString();
+			graphics_system.getMaterial(mat_id).diffuse_map = textures[diffuse]; //assign texture id from material
+		}
+		//specular
+		if (json["materials"][i].HasMember("specular")) {
+			auto& json_spec = json["materials"][i]["specular"];
+			graphics_system.getMaterial(mat_id).specular = lm::vec3(json_spec[0].GetFloat(), json_spec[1].GetFloat(), json_spec[2].GetFloat());
+		}
+		else
+			graphics_system.getMaterial(mat_id).specular = lm::vec3(0, 0, 0); //no specular
+
+		//ambient
+		if (json["materials"][i].HasMember("ambient")) {
+			auto& json_ambient = json["materials"][i]["ambient"];
+			graphics_system.getMaterial(mat_id).ambient = lm::vec3(json_ambient[0].GetFloat(), json_ambient[1].GetFloat(), json_ambient[2].GetFloat());
+		}
+		else
+			graphics_system.getMaterial(mat_id).ambient = lm::vec3(0.1f, 0.1f, 0.1f); //no specular
+
+		//add to dictionary
+		materials[name] = mat_id;
+	}
+
+	//lights
+	for (rapidjson::SizeType i = 0; i < json["lights"].Size(); i++) {
+		std::string light_name = json["lights"][i]["name"].GetString();
+		auto json_lp = json["lights"][i]["position"].GetArray();
+		auto json_lc = json["lights"][i]["color"].GetArray();
+
+		int ent_light = ECS.createEntity(light_name);
+		ECS.createComponentForEntity<Light>(ent_light);
+		ECS.getComponentFromEntity<Transform>(ent_light).translate(json_lp[0].GetFloat(), json_lp[1].GetFloat(), json_lp[2].GetFloat());
+		ECS.getComponentFromEntity<Light>(ent_light).color = lm::vec3(json_lc[0].GetFloat(), json_lc[1].GetFloat(), json_lc[2].GetFloat());
+	}
+
+	//entities
+	for (rapidjson::SizeType i = 0; i < json["entities"].Size(); i++) {
+
+		//json for entity
+		auto& json_ent = json["entities"][i];
+
+		//get name
+		std::string json_name = "";
+		if (json_ent.HasMember("name"))
+			json_name = json_ent["name"].GetString();
+
+		//get geometry and material ids - obligatory fields
+		std::string json_geometry = json_ent["geometry"].GetString();
+		std::string json_material = json_ent["material"].GetString();
+
+		//transform - obligatory field
+		auto jt = json_ent["transform"]["translate"].GetArray();
+		auto jr = json_ent["transform"]["rotate"].GetArray();
+		auto js = json_ent["transform"]["scale"].GetArray();
+
+		//create entity
+		int ent_id = ECS.createEntity(json_name);
+		Mesh& ent_mesh = ECS.createComponentForEntity<Mesh>(ent_id);
+		ent_mesh.geometry = geometries[json_geometry];
+		ent_mesh.material = materials[json_material];
+
+		//transform
+		auto& ent_transform = ECS.getComponentFromEntity<Transform>(ent_id);
+
+		//rotate
+		//get rotation euler angles
+		lm::vec3 rotate; rotate.x = jr[0].GetFloat(); rotate.y = jr[1].GetFloat(); rotate.z = jr[2].GetFloat();
+		//create quaternion from euler angles
+		lm::quat qR(rotate.x*DEG2RAD, rotate.y*DEG2RAD, rotate.z*DEG2RAD);
+		//create matrix which represents these rotations
+		lm::mat4 R; R.makeRotationMatrix(qR);
+		//multiply transform by this matrix
+		ent_transform.set(ent_transform * R);
+
+		//scale
+		ent_transform.scaleLocal(js[0].GetFloat(), js[1].GetFloat(), js[2].GetFloat());
+		//translate
+		ent_transform.translate(jt[0].GetFloat(), jt[1].GetFloat(), jt[2].GetFloat());
+
+		if (json_ent["transform"].HasMember("parent")) {
+			std::string json_parent = json_ent["transform"]["parent"].GetString();
+			if (json_name == "" || json_parent == "") std::cerr << "ERROR: Parser: Either parent or child has no name";
+			child_parent[json_name] = json_parent;
+		}
+
+
+		//optional fields below
+		if (json_ent.HasMember("collider")) {
+			std::string coll_type = json_ent["collider"]["type"].GetString();
+			if (coll_type == "Box") {
+				Collider& box_collider = ECS.createComponentForEntity<Collider>(ent_id);
+				box_collider.collider_type = ColliderTypeBox;
+
+				auto json_col_center = json_ent["collider"]["center"].GetArray();
+				box_collider.local_center.x = json_col_center[0].GetFloat();
+				box_collider.local_center.y = json_col_center[1].GetFloat();
+				box_collider.local_center.z = json_col_center[2].GetFloat();
+
+				auto json_col_halfwidth = json_ent["collider"]["halfwidth"].GetArray();
+				box_collider.local_halfwidth.x = json_col_halfwidth[0].GetFloat();
+				box_collider.local_halfwidth.y = json_col_halfwidth[1].GetFloat();
+				box_collider.local_halfwidth.z = json_col_halfwidth[2].GetFloat();
+			}
+			///TODO - Ray
+		}
+	}
+
+	//now link hierarchy need to get transform id from parent entity, 
+	//and link to transform object from child entity
+	for (std::pair<std::string, std::string> relationship : child_parent)
+	{
+		//get parent entity
+		int parent_entity_id = ECS.getEntity(relationship.second);
+		Entity& parent = ECS.entities[parent_entity_id];
+		int parent_transform_id = parent.components[0]; //transform component is always in slot 0
+
+		//get child transform
+		Transform& transform_child = ECS.getComponentFromEntity<Transform>(relationship.first);
+
+		//link child transform with parent id
+		transform_child.parent = parent_transform_id;
+	}
+
+	return true;
 }
