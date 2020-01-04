@@ -10,7 +10,7 @@
 #include "Parsers.h"
 #include "MoveScript.h"
 #include "SwitchScript.h"
-
+#include "Parsers.h"
 
 Game::Game() {
 
@@ -146,7 +146,7 @@ void Game::init() {
 	graphics_system_.init();
 	scripts_system_.init(&control_system_),
 	
-
+	//Parsers::parseJSONLevel("data/assets/Alex_level.json", graphics_system_);
     //******** CREATE AND ADD RESOURCES **********//
     
     //shaders
