@@ -13,6 +13,7 @@
     <ClCompile Include="..\src\ScriptSystem.cpp" />
     <ClCompile Include="..\src\MoveScript.cpp" />
     <ClCompile Include="..\src\SwitchScript.cpp" />
+    <ClCompile Include="..\src\BallMovement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\CollisionSystem.h" />
@@ -30,6 +31,7 @@
     <ClInclude Include="..\src\ScriptSystem.h" />
     <ClInclude Include="..\src\MoveScript.h" />
     <ClInclude Include="..\src\SwitchScript.h" />
+    <ClInclude Include="..\src\BallMovement.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scripts">

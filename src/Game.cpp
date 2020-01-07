@@ -10,6 +10,7 @@
 #include "Parsers.h"
 #include "MoveScript.h"
 #include "SwitchScript.h"
+#include "BallMovement.h"
 #include "Parsers.h"
 
 Game::Game() {
@@ -186,18 +187,9 @@ void Game::init() {
 		red_mat_id //material id
 	);
 
-   /* int floor_go = createFloor("floor_go", lm::vec3(5, 0, 0), 0.0, lm::vec3(1, 0, 0), lm::vec3(1, 1, 1),
-		floor_geom_id, green_mat_id);
-
-	int floor_moving = createFloor("floor_teal", lm::vec3(2.5, 0, -10), 0.0, lm::vec3(1, 0, 0), lm::vec3(1, 1, 1),
-		floor_geom_id, teal_mat_id);
-
-	int floor_moving2 = createFloor("floor_moving2", lm::vec3(2.5, 0, -20), 0.0, lm::vec3(1, 0, 0), lm::vec3(1, 1, 1),
-		floor_geom_id, teal_mat_id);*/
-
 	//players, cameras and lights
-	int ent_light_1 = createLight("Light 1", lm::vec3(0.0f, 7.0f, -50.0f), lm::vec3(1.0f, 1.0f, 1.0f));
-	int ent_light_2 = createLight("Light 2", lm::vec3(0.0f, 1.0f, -10.0f), lm::vec3(1.0f, 1.0f, 1.0f));
+	int ent_light_1 = createLight("Light 1", lm::vec3(-9.0f, 4.0f, -10.0f), lm::vec3(1.0f, 1.0f, 1.0f));
+	int ent_light_2 = createLight("Light 2", lm::vec3(6.0f, 4.0f, -10.0f), lm::vec3(1.0f, 1.0f, 1.0f));
 	int ent_player = createPlayer(lm::vec3(-2.0f, 8.0f, -2.0f), control_system_);
     ECS.main_camera = ECS.getComponentID<Camera>(ent_player);
 
@@ -236,14 +228,14 @@ void Game::init() {
 	switchScript->init(moveScript);
 
 	MoveScript* moveScript3 = new MoveScript(ECS.getEntity("playerCPU"));
-	scripts_system_.registerScript(moveScript3);
-			
+	scripts_system_.registerScript(moveScript3);	
 	SwitchScript* switchScript3 = new SwitchScript(ECS.getEntity("playerCPU"));
 	scripts_system_.registerScript(switchScript3);
 			
 	switchScript3->init(moveScript3);
 		
-	
+	BallMovement* ballmovement = new BallMovement(ECS.getEntity("Ball"));
+	scripts_system_.registerScript(ballmovement);
 
 	/**/
 	//TODO (task 2):
