@@ -74,8 +74,76 @@ int createFree(const lm::vec3& position) {
 	player_cam.setPerspective(60.0f*DEG2RAD, 1, 0.1f, 10000.0f);
 	return ent_player;
 }
+int createPaddle(std::string name_, ControlSystem& sys) {
+	int ent_padle = ECS.getEntity("aaa"); // get de id of the ball
+	//ECS.getComponentFromEntity<Transform>(ent_ball).translate(position.x, position.y, position.z);
 
-int createPlayer(const lm::vec3& position, ControlSystem& sys) {
+	//Ball colliders
+	int ent_left_Paddle_ray = ECS.createEntity("LeftPaddleRay");
+	Transform& left_ray_trans = ECS.createComponentForEntity<Transform>(ent_left_Paddle_ray);
+	left_ray_trans.parent = ECS.getComponentID<Transform>(ent_padle); //set parent as ball entity *transform*!
+	Collider& left_ray_collider = ECS.createComponentForEntity<Collider>(ent_left_Paddle_ray);
+	left_ray_collider.collider_type = ColliderTypeRay;
+	left_ray_collider.direction = lm::vec3(-1.0, 0.0, 0.0);
+	left_ray_collider.max_distance = 2.0f;
+	int ent_right_Paddle_ray = ECS.createEntity("RightPaddleRay");
+	Transform& right_ray_trans = ECS.createComponentForEntity<Transform>(ent_right_Paddle_ray);
+	right_ray_trans.parent = ECS.getComponentID<Transform>(ent_padle); //set parent as player entity *transform*!
+	Collider& right_ray_collider = ECS.createComponentForEntity<Collider>(ent_right_Paddle_ray);
+	right_ray_collider.collider_type = ColliderTypeRay;
+	right_ray_collider.direction = lm::vec3(1.0, 0.0, 0.0);
+	right_ray_collider.max_distance = 2.0f;
+	sys.Ball_collider_left = ECS.getComponentID<Collider>(ent_left_Paddle_ray);
+	sys.Ball_collider_right = ECS.getComponentID<Collider>(ent_right_Paddle_ray);
+	return ent_padle;
+}
+int createPaddleCPU(std::string name_, ControlSystem& sys) {
+	int ent_padleCPU = ECS.getEntity("playerCPU"); // get de id of the ball
+	//ECS.getComponentFromEntity<Transform>(ent_ball).translate(position.x, position.y, position.z);
+
+	//Ball colliders
+	int ent_left_Paddle_ray = ECS.createEntity("LeftPaddleRay");
+	Transform& left_ray_trans = ECS.createComponentForEntity<Transform>(ent_left_Paddle_ray);
+	left_ray_trans.parent = ECS.getComponentID<Transform>(ent_padleCPU); //set parent as ball entity *transform*!
+	Collider& left_ray_collider = ECS.createComponentForEntity<Collider>(ent_left_Paddle_ray);
+	left_ray_collider.collider_type = ColliderTypeRay;
+	left_ray_collider.direction = lm::vec3(-1.0, 0.0, 0.0);
+	left_ray_collider.max_distance = 2.0f;
+	int ent_right_Paddle_ray = ECS.createEntity("RightPaddleRay");
+	Transform& right_ray_trans = ECS.createComponentForEntity<Transform>(ent_right_Paddle_ray);
+	right_ray_trans.parent = ECS.getComponentID<Transform>(ent_padleCPU); //set parent as player entity *transform*!
+	Collider& right_ray_collider = ECS.createComponentForEntity<Collider>(ent_right_Paddle_ray);
+	right_ray_collider.collider_type = ColliderTypeRay;
+	right_ray_collider.direction = lm::vec3(1.0, 0.0, 0.0);
+	right_ray_collider.max_distance = 2.0f;
+	sys.Ball_collider_left = ECS.getComponentID<Collider>(ent_left_Paddle_ray);
+	sys.Ball_collider_right = ECS.getComponentID<Collider>(ent_right_Paddle_ray);
+	return ent_padleCPU;
+}
+int createBall(std::string name_, ControlSystem& sys) {
+	int ent_ball = ECS.getEntity("Ball"); // get de id of the ball
+		//ECS.getComponentFromEntity<Transform>(ent_ball).translate(position.x, position.y, position.z);
+
+		//Ball colliders
+	int ent_left_ball_ray = ECS.createEntity("LeftBallRay");
+	Transform& left_ray_trans = ECS.createComponentForEntity<Transform>(ent_left_ball_ray);
+	left_ray_trans.parent = ECS.getComponentID<Transform>(ent_ball); //set parent as ball entity *transform*!
+	Collider& left_ray_collider = ECS.createComponentForEntity<Collider>(ent_left_ball_ray);
+	left_ray_collider.collider_type = ColliderTypeRay;
+	left_ray_collider.direction = lm::vec3(-1.0, 0.0, 0.0);
+	left_ray_collider.max_distance = 2.0f;
+	int ent_right_ball_ray = ECS.createEntity("RightBallRay");
+	Transform& right_ray_trans = ECS.createComponentForEntity<Transform>(ent_right_ball_ray);
+	right_ray_trans.parent = ECS.getComponentID<Transform>(ent_ball); //set parent as player entity *transform*!
+	Collider& right_ray_collider = ECS.createComponentForEntity<Collider>(ent_right_ball_ray);
+	right_ray_collider.collider_type = ColliderTypeRay;
+	right_ray_collider.direction = lm::vec3(1.0, 0.0, 0.0);
+	right_ray_collider.max_distance = 2.0f;
+	sys.Ball_collider_left = ECS.getComponentID<Collider>(ent_left_ball_ray);
+	sys.Ball_collider_right = ECS.getComponentID<Collider>(ent_right_ball_ray);
+	return ent_ball;
+}
+int createPlayer(const lm::vec3& position, ControlSystem& sys){
     int ent_player = ECS.createEntity("Player");
     Camera& player_cam = ECS.createComponentForEntity<Camera>(ent_player);
     ECS.getComponentFromEntity<Transform>(ent_player).translate(position.x, position.y, position.z);
@@ -136,8 +204,6 @@ int createPlayer(const lm::vec3& position, ControlSystem& sys) {
 
 //Nothing here yet
 void Game::init() {
-
-
 	auto& pepe = ECS.getAllComponents<Collider>();
 
 	//******* INIT SYSTEMS *******//
@@ -152,61 +218,35 @@ void Game::init() {
     
     //shaders
 	graphics_system_.loadShader("phong", "data/shaders/phong.vert", "data/shaders/phong.frag");
-    
-    //geometries
-    int floor_geom_id = graphics_system_.createGeometryFromFile("data/assets/floor_5x5.obj");
-    int plane_geom_id = graphics_system_.createPlaneGeometry();
-    
+        
 	//materials and textures
-	int red_mat_id = graphics_system_.createMaterial();
-	graphics_system_.getMaterial(red_mat_id).diffuse_map = Parsers::parseTexture("data/assets/red.tga");;
-	graphics_system_.getMaterial(red_mat_id).shader_id = graphics_system_.getShaderProgram("phong");
-	graphics_system_.getMaterial(red_mat_id).specular = lm::vec3(0, 0, 0);
+	//int red_mat_id = graphics_system_.createMaterial();
+	//graphics_system_.getMaterial(red_mat_id).diffuse_map = Parsers::parseTexture("data/assets/red.tga");;
+	//graphics_system_.getMaterial(red_mat_id).shader_id = graphics_system_.getShaderProgram("phong");
+	//graphics_system_.getMaterial(red_mat_id).specular = lm::vec3(0, 0, 0);
 
-	int green_mat_id = graphics_system_.createMaterial();
-	graphics_system_.getMaterial(green_mat_id).diffuse_map = Parsers::parseTexture("data/assets/green.tga");;
-	graphics_system_.getMaterial(green_mat_id).shader_id = graphics_system_.getShaderProgram("phong");
-	graphics_system_.getMaterial(green_mat_id).specular = lm::vec3(0, 0, 0);
+	//int green_mat_id = graphics_system_.createMaterial();
+	//graphics_system_.getMaterial(green_mat_id).diffuse_map = Parsers::parseTexture("data/assets/green.tga");;
+	//graphics_system_.getMaterial(green_mat_id).shader_id = graphics_system_.getShaderProgram("phong");
+	//graphics_system_.getMaterial(green_mat_id).specular = lm::vec3(0, 0, 0);
 
-	int teal_mat_id = graphics_system_.createMaterial();
-	graphics_system_.getMaterial(teal_mat_id).diffuse_map = Parsers::parseTexture("data/assets/block_teal.tga");;
-	graphics_system_.getMaterial(teal_mat_id).shader_id = graphics_system_.getShaderProgram("phong");
-	graphics_system_.getMaterial(teal_mat_id).specular = lm::vec3(0, 0, 0);
+	//int teal_mat_id = graphics_system_.createMaterial();
+	//graphics_system_.getMaterial(teal_mat_id).diffuse_map = Parsers::parseTexture("data/assets/block_teal.tga");;
+	//graphics_system_.getMaterial(teal_mat_id).shader_id = graphics_system_.getShaderProgram("phong");
+	//graphics_system_.getMaterial(teal_mat_id).specular = lm::vec3(0, 0, 0);
 
     
     //******* CREATE ENTITIES AND ADD COMPONENTS *******//
-
-	//floor
-	int floor_stop = createFloor(
-		"floor_stop", //name
-		lm::vec3(0,0,0), //position
-		0.0f, //rotation degree
-		lm::vec3(1, 0, 0), //rotation axis
-		lm::vec3(1, 1, 1), // scale
-		floor_geom_id, //geometry id
-		red_mat_id //material id
-	);
 
 	//players, cameras and lights
 	int ent_light_1 = createLight("Light 1", lm::vec3(-9.0f, 4.0f, -10.0f), lm::vec3(1.0f, 1.0f, 1.0f));
 	int ent_light_2 = createLight("Light 2", lm::vec3(6.0f, 4.0f, -10.0f), lm::vec3(1.0f, 1.0f, 1.0f));
 	int ent_player = createPlayer(lm::vec3(-2.0f, 8.0f, -2.0f), control_system_);
     ECS.main_camera = ECS.getComponentID<Camera>(ent_player);
-
-
+	int ent_ball = createBall("Ball", control_system_);
+	int ent_paddle = createPaddle("Pad", control_system_);
+	int en_paddleCPU = createPaddleCPU("Pad", control_system_);
 	//******* INIT SCRIPTS SYSTEM ******//
-
-	//TODO:
-	// - create a new class (.h/.cpp) called MovePlatformScript which is derived from Script
-	// - in update function of script, translate transform of 'owner' entity
-    //   in +ve 'y' direction every frame
-	// - add boolean to start/stop translate when key is pressed 
-	//		- use (input_->GetKey(GLFW_KEY_xxxx) where xxxx is the key code
-
-	//TODO: here in Game::init
-	// - create new pointer instance of MovePlaformScript
-    // - (in script constructor, pass as 'owner' the id of teal floor entity)
-	// - register it with scripts_system
 	/*
 	MoveScript* moveScript = new MoveScript(floor_moving);
 	scripts_system_.registerScript(moveScript);
@@ -216,26 +256,23 @@ void Game::init() {
 	
 	MoveScript* moveScript2 = new MoveScript(floor_moving2);
 	scripts_system_.registerScript(moveScript2);
-
 	SwitchScript* switchScript2 = new SwitchScript(floor_stop);
 	scripts_system_.registerScript(switchScript2);
 	switchScript2->init(moveScript2);
 	*/
-	MoveScript* moveScript = new MoveScript(ECS.getEntity("playerone"));
+	MoveScript* moveScript = new MoveScript(ECS.getEntity("aaa"));
 	scripts_system_.registerScript(moveScript);
-	SwitchScript* switchScript = new SwitchScript(ECS.getEntity("playerone"));
-	scripts_system_.registerScript(switchScript);
-	switchScript->init(moveScript);
+	
 
 	MoveScript* moveScript3 = new MoveScript(ECS.getEntity("playerCPU"));
 	scripts_system_.registerScript(moveScript3);	
-	SwitchScript* switchScript3 = new SwitchScript(ECS.getEntity("playerCPU"));
-	scripts_system_.registerScript(switchScript3);
-			
-	switchScript3->init(moveScript3);
+	//SwitchScript* switchScript3 = new SwitchScript(ECS.getEntity("playerCPU"));
+//	scripts_system_.registerScript(switchScript3);
+//	switchScript3->init(moveScript3);
 		
 	BallMovement* ballmovement = new BallMovement(ECS.getEntity("Ball"));
 	scripts_system_.registerScript(ballmovement);
+
 
 	/**/
 	//TODO (task 2):

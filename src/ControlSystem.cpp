@@ -27,6 +27,7 @@ void ControlSystem::updateMousePosition(int new_x, int new_y) {
 void ControlSystem::update(float dt) {
 	if (control_type == ControlTypeFPS) {
 		updateFPS(dt);
+		void updatePong(float dt);
 	}
 	else {
 		updateFree(dt);
@@ -69,7 +70,15 @@ void ControlSystem::updateFree(float dt) {
 	camera.position = transform.position();
 
 }
-
+void ControlSystem::updatePong(float dt) {
+	//fps control should have five ray colliders assigned
+	auto& colliders = ECS.getAllComponents<Collider>();
+//	Collider& collider_down = colliders[FPS_collider_down];
+	//Collider& collider_forward = colliders[FPS_collider_forward];
+	Collider& collider_Ball_left = colliders[Ball_collider_left];
+	Collider& collider_Ball_right = colliders[Ball_collider_right];
+	//Collider& collider_back = colliders[FPS_collider_back];
+}
 
 
 void ControlSystem::updateFPS(float dt) {
@@ -109,7 +118,7 @@ void ControlSystem::updateFPS(float dt) {
 		//say we can jump
 		FPS_can_jump = true;
 		//force player to correct height above ground
-		transform.position(transform.position().x, collider_down.collision_point.y + FPS_height, transform.position().z);
+		//transform.position(transform.position().x, collider_down.collision_point.y + FPS_height, transform.position().z);
 	}
 	else { // we are in the air
 		if (FPS_jump_force > 0.0) {// slow down jump with time
@@ -150,14 +159,17 @@ void ControlSystem::updateFPS(float dt) {
 	//nerf y components because we can't fly in an FPS
 	forward_dir.y = 0.0;
 	strafe_dir.y = 0.0;
+	
+	
+	//--------------------------------------------------IN OWR GAME WE DON'T WANT FPS CONTROLLER
 	//now move
-	if (input[GLFW_KEY_W] == true && !collider_forward.colliding)
-		transform.translate(forward_dir);
-	if (input[GLFW_KEY_S] == true && !collider_back.colliding)
+	if (input[GLFW_KEY_T] == true && !collider_forward.colliding)
+		transform.translate(forward_dir);          
+	if (input[GLFW_KEY_G] == true && !collider_back.colliding)
 		transform.translate(forward_dir * -1.0f);
-	if (input[GLFW_KEY_A] == true && !collider_left.colliding)
+	if (input[GLFW_KEY_F] == true && !collider_left.colliding)
 		transform.translate(strafe_dir * -1.0f);
-	if (input[GLFW_KEY_D] == true && !collider_right.colliding)
+	if (input[GLFW_KEY_H] == true && !collider_right.colliding)
 		transform.translate(strafe_dir);
 
 	//update camera position

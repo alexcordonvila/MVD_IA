@@ -1,6 +1,7 @@
 #pragma once
 #include "ScriptSystem.h"
 
+
 class BallMovement :
 	public Script
 {

@@ -28,6 +28,7 @@
     <ClCompile Include="..\src\linmath.cpp" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\MoveScript.cpp" />
+    <ClCompile Include="..\src\PaddleAI.cpp" />
     <ClCompile Include="..\src\Parsers.cpp" />
     <ClCompile Include="..\src\ScriptSystem.cpp" />
     <ClCompile Include="..\src\Shader.cpp" />
@@ -46,6 +47,7 @@
     <ClInclude Include="..\src\ControlSystem.h" />
     <ClInclude Include="..\src\linmath.h" />
     <ClInclude Include="..\src\MoveScript.h" />
+    <ClInclude Include="..\src\PaddleAI.h" />
     <ClInclude Include="..\src\Parsers.h" />
     <ClInclude Include="..\src\ScriptSystem.h" />
     <ClInclude Include="..\src\Shader.h" />

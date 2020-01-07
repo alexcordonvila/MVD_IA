@@ -21,7 +21,7 @@ class ControlSystem {
 public:
 	void init();
 	void update(float dt);
-
+	
 	//functions called directly from main.cpp, via game
 	void updateMousePosition(int new_x, int new_y);
 	void key_mouse_callback(int key, int action, int mods);
@@ -34,6 +34,9 @@ public:
 	bool GetButton(int code) { return input[code]; }
 	//mouse is public, it's just four ints
 	Mouse mouse;
+	//Pong stuff
+	int Ball_collider_left;
+	int Ball_collider_right;
 
 	//FPS stuff
 	int FPS_collider_down;
@@ -57,4 +60,5 @@ private:
 	//function to update entity movement
 	void updateFree(float dt);
 	void updateFPS(float dt);
+	void updatePong(float dt);
 };

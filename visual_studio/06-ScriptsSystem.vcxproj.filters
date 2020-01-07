@@ -14,6 +14,7 @@
     <ClCompile Include="..\src\MoveScript.cpp" />
     <ClCompile Include="..\src\SwitchScript.cpp" />
     <ClCompile Include="..\src\BallMovement.cpp" />
+    <ClCompile Include="..\src\PaddleAI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\CollisionSystem.h" />
@@ -32,6 +33,7 @@
     <ClInclude Include="..\src\MoveScript.h" />
     <ClInclude Include="..\src\SwitchScript.h" />
     <ClInclude Include="..\src\BallMovement.h" />
+    <ClInclude Include="..\src\PaddleAI.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scripts">
