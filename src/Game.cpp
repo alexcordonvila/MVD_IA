@@ -11,6 +11,7 @@
 #include "MoveScript.h"
 #include "SwitchScript.h"
 #include "BallMovement.h"
+#include "PaddleAI.h"
 #include "Parsers.h"
 
 Game::Game() {
@@ -250,6 +251,7 @@ void Game::init() {
 	/*
 	MoveScript* moveScript = new MoveScript(floor_moving);
 	scripts_system_.registerScript(moveScript);
+
 	SwitchScript* switchScript = new SwitchScript(floor_go);
 	scripts_system_.registerScript(switchScript);
 	switchScript->init(moveScript);
@@ -263,16 +265,19 @@ void Game::init() {
 	MoveScript* moveScript = new MoveScript(ECS.getEntity("aaa"));
 	scripts_system_.registerScript(moveScript);
 	
-
-	MoveScript* moveScript3 = new MoveScript(ECS.getEntity("playerCPU"));
-	scripts_system_.registerScript(moveScript3);	
+	PaddleAI* moveScriptAI = new PaddleAI(ECS.getEntity("playerCPU"));
+	scripts_system_.registerScript(moveScriptAI);
+	//moveScriptAI->init(ballmovement);
+	
 	//SwitchScript* switchScript3 = new SwitchScript(ECS.getEntity("playerCPU"));
 //	scripts_system_.registerScript(switchScript3);
 //	switchScript3->init(moveScript3);
 		
 	BallMovement* ballmovement = new BallMovement(ECS.getEntity("Ball"));
 	scripts_system_.registerScript(ballmovement);
-
+	ballmovement->init(moveScriptAI);
+	
+	
 
 	/**/
 	//TODO (task 2):
