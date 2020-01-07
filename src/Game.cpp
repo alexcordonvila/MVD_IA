@@ -186,17 +186,18 @@ void Game::init() {
 		red_mat_id //material id
 	);
 
-    int floor_go = createFloor("floor_go", lm::vec3(5, 0, 0), 0.0, lm::vec3(1, 0, 0), lm::vec3(1, 1, 1),
+   /* int floor_go = createFloor("floor_go", lm::vec3(5, 0, 0), 0.0, lm::vec3(1, 0, 0), lm::vec3(1, 1, 1),
 		floor_geom_id, green_mat_id);
 
 	int floor_moving = createFloor("floor_teal", lm::vec3(2.5, 0, -10), 0.0, lm::vec3(1, 0, 0), lm::vec3(1, 1, 1),
 		floor_geom_id, teal_mat_id);
 
 	int floor_moving2 = createFloor("floor_moving2", lm::vec3(2.5, 0, -20), 0.0, lm::vec3(1, 0, 0), lm::vec3(1, 1, 1),
-		floor_geom_id, teal_mat_id);
+		floor_geom_id, teal_mat_id);*/
 
 	//players, cameras and lights
-	int ent_light_1 = createLight("Light 1", lm::vec3(100.0f, 100.0f, 100.0f), lm::vec3(1.0f, 1.0f, 1.0f));
+	int ent_light_1 = createLight("Light 1", lm::vec3(0.0f, 7.0f, -50.0f), lm::vec3(1.0f, 1.0f, 1.0f));
+	int ent_light_2 = createLight("Light 2", lm::vec3(0.0f, 1.0f, -10.0f), lm::vec3(1.0f, 1.0f, 1.0f));
 	int ent_player = createPlayer(lm::vec3(-2.0f, 8.0f, -2.0f), control_system_);
     ECS.main_camera = ECS.getComponentID<Camera>(ent_player);
 
@@ -214,20 +215,37 @@ void Game::init() {
 	// - create new pointer instance of MovePlaformScript
     // - (in script constructor, pass as 'owner' the id of teal floor entity)
 	// - register it with scripts_system
-
+	/*
 	MoveScript* moveScript = new MoveScript(floor_moving);
 	scripts_system_.registerScript(moveScript);
 	SwitchScript* switchScript = new SwitchScript(floor_go);
 	scripts_system_.registerScript(switchScript);
 	switchScript->init(moveScript);
-
+	
 	MoveScript* moveScript2 = new MoveScript(floor_moving2);
 	scripts_system_.registerScript(moveScript2);
+
 	SwitchScript* switchScript2 = new SwitchScript(floor_stop);
 	scripts_system_.registerScript(switchScript2);
 	switchScript2->init(moveScript2);
+	*/
+	MoveScript* moveScript = new MoveScript(ECS.getEntity("playerone"));
+	scripts_system_.registerScript(moveScript);
+	SwitchScript* switchScript = new SwitchScript(ECS.getEntity("playerone"));
+	scripts_system_.registerScript(switchScript);
+	switchScript->init(moveScript);
 
+	MoveScript* moveScript3 = new MoveScript(ECS.getEntity("playerCPU"));
+	scripts_system_.registerScript(moveScript3);
+			
+	SwitchScript* switchScript3 = new SwitchScript(ECS.getEntity("playerCPU"));
+	scripts_system_.registerScript(switchScript3);
+			
+	switchScript3->init(moveScript3);
+		
+	
 
+	/**/
 	//TODO (task 2):
 	// - create a SwitchScript derived Script (owner green floor entity)
 	// - script gets collider component attached to owner entity

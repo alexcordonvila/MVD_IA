@@ -37,48 +37,48 @@
   ],
   "entities": [
     {
-      "name": "suzanne",
-      "geometry": "suzanne",
+      "name": "playerone",
+      "geometry": "paddle",
       "material": "purple",
       "transform": {
-        "translate": [ 0, 1.2, 0 ],
-        "rotate": [ 0, 0, 0 ],
-        "scale": [ 1, 1, 1 ]
+        "translate": [ -6, 3.0, -10 ],
+        "rotate": [ 0, 90, 90 ],
+        "scale": [ 0.09, 0.04, 0.09 ]
       },
       "collider": {
         "type": "Box",
         "center": [ 0, 0, 0 ],
-        "halfwidth": [ 0.6, 0.6, 0.6 ]
+        "halfwidth": [ 5, 0.5, 10 ]
       }
     },
     {
-      "name": "suzanne2",
-      "geometry": "suzanne",
+      "name": "playerCPU",
+      "geometry": "paddle",
       "material": "purple",
       "transform": {
-        "translate": [ 0, 2.4, 0 ],
-        "rotate": [ 0, 0, 0 ],
-        "scale": [ 1, 1, 1 ]
+      "translate": [ 2, 3.0, -10 ],
+      "rotate": [ 0, 90, 90 ],
+      "scale": [ 0.09, 0.04, 0.09 ]
       },
       "collider": {
         "type": "Box",
         "center": [ 0, 0, 0 ],
-        "halfwidth": [ 0.6, 0.6, 0.6 ]
+        "halfwidth": [ 5, 0.5, 10 ]
       }
     },
     {
-      "name": "suzanne3",
+      "name": "Ball",
       "geometry": "suzanne",
       "material": "purple",
       "transform": {
-        "translate": [ 0, 3.6, 0 ],
-        "rotate": [ 0, 0, 0 ],
-        "scale": [ 1, 1, 1 ]
+      "translate": [ -2, 3.0, -10 ],
+      "rotate": [ 0, 0, 0 ],
+      "scale": [ 0.5, 0.5,0.5]
       },
       "collider": {
         "type": "Box",
         "center": [ 0, 0, 0 ],
-        "halfwidth": [ 0.6, 0.6, 0.6 ]
+        "halfwidth": [ 0.2,0.2,0.2 ]
       }
     },
     {
@@ -88,7 +88,37 @@
       "transform": {
         "translate": [ 0, 0, 0 ],
         "rotate": [ 0, 0, 0 ],
-        "scale": [ 1, 1, 1 ]
+        "scale": [ 10, 1, 10 ]
+      },
+      "collider": {
+        "type": "Box",
+        "center": [ 0, 0, 0 ],
+        "halfwidth": [ 20, 0.5, 20 ]
+      }
+    },
+    {
+      "name": "Roof",
+      "geometry": "plane_40x40",
+      "material": "blue",
+      "transform": {
+        "translate": [ 0, 7.5, 0 ],
+        "rotate": [ 0, 180, 0 ],
+        "scale": [ 10, 1, 10 ]
+      },
+      "collider": {
+        "type": "Box",
+        "center": [ 0, 0, 0 ],
+        "halfwidth": [ 20, 0.5, 20 ]
+      }
+    },
+    {
+      "name": "Wall",
+      "geometry": "plane_40x40",
+      "material": "blue",
+      "transform": {
+        "translate": [ 0, 10, -20 ],
+        "rotate": [ 90, 0, 0 ],
+        "scale": [ 10, 1, 10 ]
       },
       "collider": {
         "type": "Box",
