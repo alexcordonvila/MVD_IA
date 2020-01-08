@@ -14,7 +14,7 @@ public:
 	//add whatever custom funcitons and properties here!
 	void reset(Transform* transform);
 	
-	float M_PI = 3.14159265358979323846;  /* pi */
+	float  PI = 3.141f;  /* pi */
 
 	float segment3 = 0.8;
 	float segment2 = 0.5;
@@ -27,6 +27,8 @@ public:
 	bool hitFlag = true;
 	int CPUscore = 0;
 	int Playerscore = 0;
+	float timeleft = 1.0f;
+	bool canMove = true; //makes the ball stop until "timeleft" 
 	PaddleAI* paddleai_;
 	
 	

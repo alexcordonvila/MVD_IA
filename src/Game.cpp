@@ -67,7 +67,7 @@ int createLight(std::string name,
 }
 
 int createFree(const lm::vec3& position) {
-	int ent_player = ECS.createEntity("Player");
+	int ent_player = ECS.createEntity("player");
 	Camera& player_cam = ECS.createComponentForEntity<Camera>(ent_player);
 	ECS.getComponentFromEntity<Transform>(ent_player).translate(position.x, position.y, position.z);
 	player_cam.position = lm::vec3(0.0f, 3.0f, 5.0f);
@@ -248,34 +248,20 @@ void Game::init() {
 	int ent_light_2 = createLight("Light 2", lm::vec3(6.0f, 4.0f, -10.0f), lm::vec3(1.0f, 1.0f, 1.0f));
 	int ent_player = createPlayer(lm::vec3(-2.0f, 8.0f, -2.0f), control_system_);
     ECS.main_camera = ECS.getComponentID<Camera>(ent_player);
+	
 	int ent_ball = createBall("Ball", control_system_);
 	int ent_paddle = createPaddle("Pad", control_system_);
 	int en_paddleCPU = createPaddleCPU("Pad", control_system_);
-	//******* INIT SCRIPTS SYSTEM ******//
-	/*
-	MoveScript* moveScript = new MoveScript(floor_moving);
-	scripts_system_.registerScript(moveScript);
+	////******* INIT SCRIPTS SYSTEM ******//
 
-	SwitchScript* switchScript = new SwitchScript(floor_go);
-	scripts_system_.registerScript(switchScript);
-	switchScript->init(moveScript);
-	
-	MoveScript* moveScript2 = new MoveScript(floor_moving2);
-	scripts_system_.registerScript(moveScript2);
-	SwitchScript* switchScript2 = new SwitchScript(floor_stop);
-	scripts_system_.registerScript(switchScript2);
-	switchScript2->init(moveScript2);
-	*/
+
+
 	MoveScript* moveScript = new MoveScript(ECS.getEntity("player"));
 	scripts_system_.registerScript(moveScript);
 	
 	PaddleAI* moveScriptAI = new PaddleAI(ECS.getEntity("playerCPU"));
 	scripts_system_.registerScript(moveScriptAI);
 	//moveScriptAI->init(ballmovement);
-	
-	//SwitchScript* switchScript3 = new SwitchScript(ECS.getEntity("playerCPU"));
-//	scripts_system_.registerScript(switchScript3);
-//	switchScript3->init(moveScript3);
 		
 	BallMovement* ballmovement = new BallMovement(ECS.getEntity("Ball"));
 	scripts_system_.registerScript(ballmovement);

@@ -11,7 +11,7 @@ public:
 
 	//later add custom stuff;
 
-	bool shouldMove = false;
+	//bool shouldMove = false;
 
 };
 

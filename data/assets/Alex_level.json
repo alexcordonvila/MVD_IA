@@ -37,7 +37,7 @@
   ],
   "entities": [
     {
-      "name": "aaa",
+      "name": "player",
       "geometry": "suzanne",
       "material": "purple",
       "transform": {
