@@ -85,13 +85,15 @@ int createPaddle(std::string name_, ControlSystem& sys) {
 	left_ray_trans.parent = ECS.getComponentID<Transform>(ent_padle); //set parent as ball entity *transform*!
 	Collider& left_ray_collider = ECS.createComponentForEntity<Collider>(ent_left_Paddle_ray);
 	left_ray_collider.collider_type = ColliderTypeRay;
-	left_ray_collider.direction = lm::vec3(-1.0, 0.0, 0.0);
+	left_ray_collider.local_center = lm::vec3(0.0, 0.5, 0.0);
+	left_ray_collider.direction = lm::vec3(1.0, 0.0, 0.0);
 	left_ray_collider.max_distance = 2.0f;
 	int ent_right_Paddle_ray = ECS.createEntity("RightPaddleRay");
 	Transform& right_ray_trans = ECS.createComponentForEntity<Transform>(ent_right_Paddle_ray);
 	right_ray_trans.parent = ECS.getComponentID<Transform>(ent_padle); //set parent as player entity *transform*!
 	Collider& right_ray_collider = ECS.createComponentForEntity<Collider>(ent_right_Paddle_ray);
 	right_ray_collider.collider_type = ColliderTypeRay;
+	right_ray_collider.local_center = lm::vec3(0.0, -0.5, 0.0);
 	right_ray_collider.direction = lm::vec3(1.0, 0.0, 0.0);
 	right_ray_collider.max_distance = 2.0f;
 	sys.Ball_collider_left = ECS.getComponentID<Collider>(ent_left_Paddle_ray);
@@ -108,6 +110,7 @@ int createPaddleCPU(std::string name_, ControlSystem& sys) {
 	left_ray_trans.parent = ECS.getComponentID<Transform>(ent_padleCPU); //set parent as ball entity *transform*!
 	Collider& left_ray_collider = ECS.createComponentForEntity<Collider>(ent_left_Paddle_ray);
 	left_ray_collider.collider_type = ColliderTypeRay;
+	left_ray_collider.local_center = lm::vec3(0.0, 0.5, 0.0);
 	left_ray_collider.direction = lm::vec3(-1.0, 0.0, 0.0);
 	left_ray_collider.max_distance = 2.0f;
 	int ent_right_Paddle_ray = ECS.createEntity("RightPaddleRay");
@@ -115,7 +118,8 @@ int createPaddleCPU(std::string name_, ControlSystem& sys) {
 	right_ray_trans.parent = ECS.getComponentID<Transform>(ent_padleCPU); //set parent as player entity *transform*!
 	Collider& right_ray_collider = ECS.createComponentForEntity<Collider>(ent_right_Paddle_ray);
 	right_ray_collider.collider_type = ColliderTypeRay;
-	right_ray_collider.direction = lm::vec3(1.0, 0.0, 0.0);
+	right_ray_collider.local_center = lm::vec3(0.0, -0.5, 0.0);
+	right_ray_collider.direction = lm::vec3(-1.0, 0.0, 0.0);
 	right_ray_collider.max_distance = 2.0f;
 	sys.Ball_collider_left = ECS.getComponentID<Collider>(ent_left_Paddle_ray);
 	sys.Ball_collider_right = ECS.getComponentID<Collider>(ent_right_Paddle_ray);
