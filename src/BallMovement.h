@@ -24,6 +24,9 @@ public:
 	float y_pos = 3.0f ;
 	float xspeed = 3.0f;
 	float yspeed = 0.0f;
+	bool hitFlag = true;
+	int CPUscore = 0;
+	int Playerscore = 0;
 	PaddleAI* paddleai_;
 	
 	

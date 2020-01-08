@@ -76,7 +76,7 @@ int createFree(const lm::vec3& position) {
 	return ent_player;
 }
 int createPaddle(std::string name_, ControlSystem& sys) {
-	int ent_padle = ECS.getEntity("aaa"); // get de id of the ball
+	int ent_padle = ECS.getEntity("player"); // get de id of the ball
 	//ECS.getComponentFromEntity<Transform>(ent_ball).translate(position.x, position.y, position.z);
 
 	//Ball colliders
@@ -266,7 +266,7 @@ void Game::init() {
 	scripts_system_.registerScript(switchScript2);
 	switchScript2->init(moveScript2);
 	*/
-	MoveScript* moveScript = new MoveScript(ECS.getEntity("aaa"));
+	MoveScript* moveScript = new MoveScript(ECS.getEntity("player"));
 	scripts_system_.registerScript(moveScript);
 	
 	PaddleAI* moveScriptAI = new PaddleAI(ECS.getEntity("playerCPU"));
