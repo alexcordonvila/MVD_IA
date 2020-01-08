@@ -26,16 +26,6 @@ void MoveScript::update(float dt)
 		//if (transform->position().y >= 2 && transform->position().y <= 6) 
 			transform->translate(0, -yspeed * dt, 0);
 		
-	/*
-	if (input_->GetKey(GLFW_KEY_U))
-		shouldMove = true;
-
-	if (input_->GetKey(GLFW_KEY_J))
-		shouldMove = false;
-
-	if (shouldMove)
-		trans->translate(1 * dt, 0, 0);
-		*/
 }
 
 
