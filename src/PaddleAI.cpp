@@ -27,11 +27,15 @@ void PaddleAI::sense(float CPUpos, float ballpos,float playerpos, float dt) //He
 }
 void PaddleAI::think(float CPUpos, float ballpos, float playerpos, float dt) //Here we only choose the behaviour
 {
-	if (ballpos > CPUpos) {
+	if (ballpos >= CPUpos) {
 
 		act(yspeed,1.0f,dt);
 	}
-	if (ballpos < CPUpos) {
+	if (ballpos == CPUpos) {
+
+		act(0.0, -1.0f, dt);
+	}
+	if (ballpos <= CPUpos) {
 
 		act(yspeed, -1.0f, dt);
 	}

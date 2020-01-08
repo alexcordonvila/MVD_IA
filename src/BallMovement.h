@@ -15,7 +15,7 @@ public:
 	void reset(Transform* transform);
 	
 	float  PI = 3.141f;  /* pi */
-
+	Transform* transform = &ECS.getComponentFromEntity<Transform>(owner_);
 	float segment3 = 0.8;
 	float segment2 = 0.5;
 	float segment1 = 0.2;
@@ -28,6 +28,8 @@ public:
 	int CPUscore = 0;
 	int Playerscore = 0;
 	float timeleft = 1.0f;
+	float initialTimeleft = 1.0;
+	bool startCanMove = false;
 	bool canMove = true; //makes the ball stop until "timeleft" 
 	PaddleAI* paddleai_;
 	

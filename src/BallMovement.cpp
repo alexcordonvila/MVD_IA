@@ -5,16 +5,19 @@
 
 void BallMovement::update(float dt)
 {
-	//printf("Delta time = %f \n", dt);
-	//timeleft = timeleft - dt;
-	printf("Time Left = %f \n", timeleft);
+	initialTimeleft = initialTimeleft - dt;
+	
+	if (initialTimeleft < 0) {
+		startCanMove = true;
+	}
+	printf("Time Left = %f \n", initialTimeleft);
 	Collider& collider_paddle = ECS.getComponentFromEntity<Collider>(owner_);
 	Transform* transform;
 	transform = &ECS.getComponentFromEntity<Transform>(owner_);
 	float y_coll_point = collider_paddle.collision_point.y; //hit point bwteen paddles and puck
 	y_pos = transform->position().y; //ball y position
-	if(canMove){
-	transform->translate(xspeed * dt, yspeed * dt, 0); //Ball movement
+	if(canMove && startCanMove){
+		transform->translate(xspeed * dt, yspeed * dt, 0); //Ball movement
 	}
 	this->paddleai_->ypos = transform->position().y; //AI paddle needs this variable
 	
@@ -103,4 +106,5 @@ void BallMovement::reset(Transform* transform) {
 void BallMovement::init(PaddleAI* paddleai_)
 {
 	this->paddleai_ = paddleai_;
+	
 }

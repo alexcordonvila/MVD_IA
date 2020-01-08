@@ -4,7 +4,7 @@
 void MoveScript::update(float dt)
 {
 	Transform* transform;
-	float yspeed = 4;
+	
 	
 	Collider& collider_paddle = ECS.getComponentFromEntity<Collider>(owner_);
 	
