@@ -9,6 +9,10 @@ public:
     void update(float dt);
     
     void setActive(bool a);
+	//public imGUI functions
+	bool isShowGUI() { return show_imGUI_; };
+	void toggleimGUI() { show_imGUI_ = !show_imGUI_; };
+
 private:
     //bools to draw or not
     bool draw_grid_;
@@ -45,6 +49,10 @@ private:
     Shader* grid_shader_;
     Shader* icon_shader_;
     
+	//imGUI
+	bool show_imGUI_ = false;
+	void updateimGUI_(float dt);
+
     const char* line_vertex_shader_ =
     "#version 330\n"
     "layout(location = 0) in vec4 a_vertex; \n"

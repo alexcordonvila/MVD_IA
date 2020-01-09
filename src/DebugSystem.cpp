@@ -205,8 +205,117 @@ void DebugSystem::update(float dt) {
         }
     }
     glBindVertexArray(0);
+	//imGUI
+	updateimGUI_(dt);
 }
 
+void DebugSystem::updateimGUI_(float dt) {
+
+	if (show_imGUI_)
+	{
+		// Start the Dear ImGui frame
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+
+		//Demo window
+		ImGui::ShowDemoWindow();
+
+		//get input
+		//ImGuiIO &io = ImGui::GetIO();
+
+		//if imGUI wants the mouse, don't fire picking ray
+		//if (io.WantCaptureMouse)
+			//can_fire_picking_ray_ = false;
+		//else
+			//can_fire_picking_ray_ = true;
+
+		//open window
+	//	ImGui::SetNextWindowSize(ImVec2(400, 200));
+		//ImGui::SetNextWindowBgAlpha(1.0);
+		// Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+		//ImGui::Begin("Scene", &show_imGUI_);
+
+		//Tell imGUI to display variables of the camera
+
+		//get camera and its transform
+		/*Camera& cam = ECS.getComponentInArray<Camera>(ECS.main_camera);
+		Transform& cam_transform = ECS.getComponentFromEntity<Transform>(cam.owner);*/
+
+		//Create an unfoldable tree node called 'Camera'
+		//if (ImGui::TreeNode("Camera")) {
+		//	//create temporary arrays with position and direction data
+		//	float cam_pos_array[3] = { cam.position.x, cam.position.y, cam.position.z };
+		//	float cam_dir_array[3] = { cam.forward.x, cam.forward.y, cam.forward.z };
+
+		//	//create imGUI components that allow us to change the values when click-dragging
+		//	ImGui::DragFloat3("Position", cam_pos_array);
+		//	ImGui::DragFloat3("Direction", cam_dir_array);
+
+		//	//use values of temporary arrays to set real values (in case user changes)
+		//	cam.position = lm::vec3(cam_pos_array[0], cam_pos_array[1], cam_pos_array[2]);
+		//	cam_transform.position(cam.position);
+		//	cam.forward = lm::vec3(cam_dir_array[0], cam_dir_array[1], cam_dir_array[2]).normalize();
+		//	ImGui::TreePop();
+		//}
+
+		//start ImGui columns
+		//ImGui::Columns(2, "columns");
+
+
+		// TODO: - draw each transform using ImGui::TreeNode (see camera example above)
+		// - create a separate function (imGuiRenderTransform)
+		// - get all transforms
+		// - for each transform:
+		//  - get owner entity
+		//  - create node with entity name
+		//  - create float[3] array with transform position
+		//  - create IMGUI::DragFloat3 using this array
+		//  - set transform position based on array
+		//  - call ImGUI::TreePop to finish, otherwise it will crash
+
+
+		// Advanced task:
+		// - Create entity hiearchy using the 'TransformNode' class (defined in DebugSystem.h)
+		//   - get all Transform Components and create a array of all TransformNodes
+		//   - parse array, assigning children to relevant transform nodes
+		//   - create new vector of Transform nodes for *only top level nodes*
+		// - Create recursive function to draw all transforms nodes, using hierarchy
+
+		//next column
+		//ImGui::NextColumn();
+
+		//*** PICKING*** //
+		//general approach: Debug System has a member variable which is an entity
+		//with Ray Collider (ent_picking_ray_). When user clicks on the screen, this
+		//ray is fired into the scene.
+		//if it collides with a box collider, we read that collision here and render
+		//imGUI with the details of the collider
+
+		//look at DebugSystem::setPickingRay_() to see how picking ray is constructed
+
+		//get the pick ray first
+		//Collider& pick_ray_collider = ECS.getComponentFromEntity<Collider>(ent_picking_ray_);
+
+		//is it colliding? if so, get pitcked, entity, and transform
+		//int picked_entity = -1;
+		//if (pick_ray_collider.colliding) {
+		//	//get the other collider and entity
+		//	Collider& picked_collider = ECS.getComponentInArray<Collider>(pick_ray_collider.other);
+		//	picked_entity = picked_collider.owner;
+		//	Transform& picked_transform = ECS.getComponentFromEntity<Transform>(picked_entity);
+		//	ImGui::Text("Selected entity:");
+		//	ImGui::TextColored(ImVec4(1, 1, 0, 1), ECS.entities[picked_collider.owner].name.c_str());
+		//}
+
+
+		//ImGui::End();
+
+		// Rendering
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	}
+}
 ///////////////////////////////////////////////
 // **** Functions to create geometry ********//
 ///////////////////////////////////////////////

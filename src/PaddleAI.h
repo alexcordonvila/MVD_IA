@@ -1,6 +1,7 @@
 #pragma once
 #include "extern.h"
 #include "ScriptSystem.h"
+#include <time.h> 
 //#include "BallMovement.h"
 
 class PaddleAI :
@@ -19,5 +20,8 @@ public:
 	float y_player_pos = 0.0f; //This is the y position of the player
 	float yspeed = 4.0f; //This is the y speed of the AI 
 	float cpu_player_dist = 0.0f; // Y distance difference between cpu and player
+	float random_val;
+	int ball_direction =1;
+	bool reset = false;
 
 };

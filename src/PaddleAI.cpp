@@ -18,17 +18,22 @@ void PaddleAI::update(float dt)
 	if (ypos < transform->position().y) {
 		transform->translate(0, -yspeed * dt, 0);
 	}*/
-
+	if (reset == true) {
+		transform->position(2.0f, 3.0f, -10.0f);
+		reset = false;
+	}
 
 }
 void PaddleAI::sense(float CPUpos, float ballpos,float playerpos, float dt) //Here we only recieve data
 {
-	think(CPUpos, ballpos, playerpos, dt);
+	if (ball_direction == 1) {
+		think(CPUpos, ballpos, playerpos, dt);
+	}
 }
 void PaddleAI::think(float CPUpos, float ballpos, float playerpos, float dt) //Here we only choose the behaviour
 {
 	cpu_player_dist = abs(CPUpos - playerpos); // Y distance difference between cpu and player
-//	printf("Player vs CPU = %f\n", cpu_player_dist);
+
 	//if cpu_player_dist is greater than 0.5 -> change hit puck strategy
 	if(cpu_player_dist <= 1.0f){ //If player and CPU are in a near "y" position
 		if (CPUpos >= 4.0f) { // if we are avobe of the "y" screen center
@@ -39,7 +44,15 @@ void PaddleAI::think(float CPUpos, float ballpos, float playerpos, float dt) //H
 		}
 		if (CPUpos >= 3.0f && CPUpos <= 4.0f) {
 			//TODO: CREATE A RANDOM VALUE BETWEEN 0 and 1
-			act2(yspeed, 1, CPUpos, ballpos, dt); //The AI tries to hit the ball upward or downward randomly
+			srand((unsigned)time(NULL));
+			for (int i = 0; i < 5; i++) random_val = (float)rand() / RAND_MAX;
+			if (random_val > 0.5f) {
+				act2(yspeed, 1, CPUpos, ballpos, dt); //The AI tries to hit the ball upward or downward randomly
+			}
+			else {
+				act2(yspeed, 0, CPUpos, ballpos, dt);
+			}
+			
 		}
 	}else{						//If player and CPU are in a far "y" position AI try to hit the ball forward
 		if (ballpos >= CPUpos) {
@@ -74,10 +87,10 @@ void PaddleAI::act2(float yspeed, int zone,float CPUpos,float ballpos, float dt)
 		printf("Cas a\n");
 	}
 	if (zone == 0) {
-		if (cpu_ball_dist < 0.5f) {
+		if (cpu_ball_dist < 0.3f) {
 			transform->translate(0, yspeed * -1.0 * dt, 0);
 		}
-		if (cpu_ball_dist > 0.5f) {
+		if (cpu_ball_dist > 0.3f) {
 			transform->translate(0, yspeed * 1.0 * dt, 0);
 		}
 		printf("Cas b\n");

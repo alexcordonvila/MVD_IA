@@ -22,9 +22,10 @@ public:
 	float segment1 = 0.2;
 	float segment0 = 0.0;
 	float angle;
+	int dir;
 	float y_pos = 3.0f ;
 	float xspeed = 3.0f;
-	float yspeed = 0.0f;
+	float yspeed = 2.0f;
 	bool hitFlag = true;
 	int CPUscore = 0;
 	int Playerscore = 0;

@@ -10,6 +10,10 @@ void MoveScript::update(float dt)
 	
 	transform = &ECS.getComponentFromEntity<Transform>(owner_);
 	this->paddleai_->y_player_pos = transform->position().y; //AI paddle needs player position
+	if (reset == true) {
+		transform->position(-6.0f, 3.0f, -10.0f);
+		reset = false;
+	}
 	if (collider_paddle.colliding) {
 	}
 	else {

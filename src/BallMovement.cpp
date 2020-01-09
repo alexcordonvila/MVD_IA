@@ -6,7 +6,7 @@
 void BallMovement::update(float dt)
 {
 	initialTimeleft = initialTimeleft - dt;
-	
+//	debug_system_toggleimGUI();
 	if (initialTimeleft < 0) {
 		startCanMove = true;
 	}
@@ -29,11 +29,12 @@ void BallMovement::update(float dt)
 	//if the ball puck with the paddle at certain distance
 	if (collider_paddle.collision_distance < 0.5f && hitFlag == true) {
 		float diff = y_pos - y_coll_point;
-		int dir; //set puck direction positive or negative
+		 dir; //set puck direction positive or negative
 		int angledir = 1; //set angle positive or negative
 		
 		std::cout << "DIFF : " << diff << "\n";
 		(xspeed > 0) ? dir = -1 : dir = 1;
+		this->paddleai_->ball_direction = dir;
 		(diff > 0) ? angledir = 1 : angledir = -1;
 
 		if (abs(diff) >= segment2 && abs(diff) <= segment3) {
@@ -68,6 +69,7 @@ void BallMovement::update(float dt)
 		timeleft = timeleft - dt;
 		//printf("Time Left = %f \n" , timeleft);
 		transform->position(-2.0f, 3.0f, -10.0f);
+		this->paddleai_->reset = true;
 		
 		if (timeleft<0) {
 			reset(transform);
@@ -88,8 +90,8 @@ void BallMovement::reset(Transform* transform) {
 	canMove = true;
 	srand((unsigned)time(NULL));
 	for (int i = 0; i < 5; i++) angle = (float)rand() / RAND_MAX; 
-	cout << (float)rand() / RAND_MAX << endl;
-	angle = 0.0f;
+	//cout << (float)rand() / RAND_MAX << endl;
+	
 	if (angle >0.5f) {
 		xspeed = -5 * cos(angle * (PI / 4));
 		yspeed = 5 * sin(angle * ((PI) / 4));

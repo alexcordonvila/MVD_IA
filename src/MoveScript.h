@@ -8,7 +8,8 @@ public:
 	MoveScript(int owner) : Script(owner) {}
 	void update(float dt);
 	void init(PaddleAI* paddleAI);
-	float yspeed = 3;
+	float yspeed = 4;
+	bool reset = false;
 	PaddleAI* paddleai_;
 };
 
