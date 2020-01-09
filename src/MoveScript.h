@@ -1,18 +1,14 @@
 #pragma once
 #include "ScriptSystem.h"
-
+#include "PaddleAI.h"
 class MoveScript :
 	public Script
 {
 public:
 	MoveScript(int owner) : Script(owner) {}
 	void update(float dt);
+	void init(PaddleAI* paddleAI);
 	float yspeed = 3;
-	//void init();
-
-	//later add custom stuff;
-
-	//bool shouldMove = false;
-
+	PaddleAI* paddleai_;
 };
 

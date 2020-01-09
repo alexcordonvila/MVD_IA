@@ -11,6 +11,7 @@ public:
 	BallMovement(int owner) : Script(owner) {}
 	void update(float dt);
 	void init(PaddleAI* paddleAI);
+	
 	//add whatever custom funcitons and properties here!
 	void reset(Transform* transform);
 	

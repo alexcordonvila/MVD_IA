@@ -262,10 +262,10 @@ void Game::init() {
 	PaddleAI* moveScriptAI = new PaddleAI(ECS.getEntity("playerCPU"));
 	scripts_system_.registerScript(moveScriptAI);
 	//moveScriptAI->init(ballmovement);
-		
+	moveScript->init(moveScriptAI); //AI needs player info
 	BallMovement* ballmovement = new BallMovement(ECS.getEntity("Ball"));
 	scripts_system_.registerScript(ballmovement);
-	ballmovement->init(moveScriptAI);
+	ballmovement->init(moveScriptAI); //AI needs puck info
 	
 	
 

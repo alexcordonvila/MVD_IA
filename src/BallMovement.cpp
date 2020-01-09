@@ -10,7 +10,7 @@ void BallMovement::update(float dt)
 	if (initialTimeleft < 0) {
 		startCanMove = true;
 	}
-	printf("Time Left = %f \n", initialTimeleft);
+	//printf("Time Left = %f \n", initialTimeleft);
 	Collider& collider_paddle = ECS.getComponentFromEntity<Collider>(owner_);
 	Transform* transform;
 	transform = &ECS.getComponentFromEntity<Transform>(owner_);
@@ -75,7 +75,7 @@ void BallMovement::update(float dt)
 		
 	}
 	//Check ceiling and floor collision
-	if (transform->position().y > 7 || transform->position().y < 0) {
+	if (transform->position().y > 7 || transform->position().y < 1) {
 		yspeed = yspeed * -1;
 	}
 
@@ -89,6 +89,7 @@ void BallMovement::reset(Transform* transform) {
 	srand((unsigned)time(NULL));
 	for (int i = 0; i < 5; i++) angle = (float)rand() / RAND_MAX; 
 	cout << (float)rand() / RAND_MAX << endl;
+	angle = 0.0f;
 	if (angle >0.5f) {
 		xspeed = -5 * cos(angle * (PI / 4));
 		yspeed = 5 * sin(angle * ((PI) / 4));
