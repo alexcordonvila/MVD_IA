@@ -14,6 +14,7 @@
 #include "PaddleAI.h"
 #include "Parsers.h"
 
+
 Game::Game() {
 
 }
@@ -211,6 +212,7 @@ int createPlayer(const lm::vec3& position, ControlSystem& sys){
 void Game::init() {
 	auto& pepe = ECS.getAllComponents<Collider>();
 
+	debug_system_.toggleimGUI();
 	//******* INIT SYSTEMS *******//
 
 	//init systems except debug and scripts, which needs info about scene

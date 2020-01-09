@@ -2,6 +2,7 @@
 #include "ScriptSystem.h"
 #include "PaddleAI.h"
 #include "extern.h"
+
 #include <time.h> 
 
 class BallMovement :
@@ -11,7 +12,7 @@ public:
 	BallMovement(int owner) : Script(owner) {}
 	void update(float dt);
 	void init(PaddleAI* paddleAI);
-	
+
 	//add whatever custom funcitons and properties here!
 	void reset(Transform* transform);
 	
@@ -22,7 +23,7 @@ public:
 	float segment1 = 0.2;
 	float segment0 = 0.0;
 	float angle;
-	int dir;
+	int dir = 1;
 	float y_pos = 3.0f ;
 	float xspeed = 3.0f;
 	float yspeed = 2.0f;

@@ -1,6 +1,7 @@
 #include "BallMovement.h"
 #include "extern.h"
 #include <Windows.h>
+
 //Ball movement script and score control
 
 void BallMovement::update(float dt)
@@ -8,6 +9,8 @@ void BallMovement::update(float dt)
 	initialTimeleft = initialTimeleft - dt;
 //	debug_system_toggleimGUI();
 	if (initialTimeleft < 0) {
+		(xspeed > 0) ? dir = 1 : dir = -1;
+		this->paddleai_->ball_direction = dir;
 		startCanMove = true;
 	}
 	//printf("Time Left = %f \n", initialTimeleft);
@@ -100,12 +103,13 @@ void BallMovement::reset(Transform* transform) {
 		xspeed = 5 * cos(angle * (PI / 4));
 		yspeed = 5 * sin(angle * ((PI) / 4));
 	}
-	
+	dir = dir * -1;
 	timeleft = 1.0f;
 	std::cout << "Player Score : " << Playerscore << "\n";
 	std::cout << "CPU Score : " << CPUscore << "\n";
 	transform->position(-2.0f, 3.0f, -10.0f);
 }
+
 void BallMovement::init(PaddleAI* paddleai_)
 {
 	this->paddleai_ = paddleai_;

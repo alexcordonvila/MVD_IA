@@ -19,13 +19,18 @@ public:
 	Game();
 	void init();
 	void update(float dt);
-
+	
 	//pass input straight to input system
 	void updateMousePosition(int new_x, int new_y) { 
 		control_system_.updateMousePosition(new_x, new_y);
 	}
 	void key_callback(int key, int scancode, int action, int mods) {
 		control_system_.key_mouse_callback(key, action, mods);
+		//if (key == GLFW_KEY_0 && action == GLFW_PRESS && mods == GLFW_MOD_ALT)
+			//debug_system_.toggleimGUI();
+
+		if (!debug_system_.isShowGUI())
+			control_system_.key_mouse_callback(key, action, mods);
 	}
 	void mouse_button_callback(int button, int action, int mods) {
 		control_system_.key_mouse_callback(button, action, mods);

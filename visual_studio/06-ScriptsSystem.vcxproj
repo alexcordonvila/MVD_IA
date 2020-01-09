@@ -65,6 +65,7 @@
     <ClInclude Include="..\src\Parsers.h" />
     <ClInclude Include="..\src\ScriptSystem.h" />
     <ClInclude Include="..\src\Shader.h" />
+    <ClInclude Include="..\src\shaders_default.h" />
     <ClInclude Include="..\src\SwitchScript.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -76,6 +76,7 @@
     <ClInclude Include="..\src\imstb_truetype.h">
       <Filter>imGUI</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\shaders_default.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scripts">
