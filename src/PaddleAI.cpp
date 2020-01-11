@@ -109,3 +109,8 @@ void PaddleAI::act2(float yspeed, int zone, float CPUpos, float ballpos, float d
 			}
 	}
 }
+
+//void PaddleAI::init(MoveScript* movescript_)
+//{
+//	this->movescript_ = movescript_;
+//}

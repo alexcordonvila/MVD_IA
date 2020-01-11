@@ -29,7 +29,7 @@ public:
 	float angle;
 	int dir = 1;
 	float y_pos = 3.0f ;
-	float xspeed = 7.0f;
+	float xspeed = 4.0f;
 	float yspeed = 4.0f;
 	bool hitFlag = true;
 	int CPUscore = 0;
