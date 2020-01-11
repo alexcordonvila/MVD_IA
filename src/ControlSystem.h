@@ -37,7 +37,10 @@ public:
 	//Pong stuff
 	int Ball_collider_left;
 	int Ball_collider_right;
-
+	int Ball_collider_left2;
+	int Ball_collider_right2;
+	int Ball_collider_left3;
+	int Ball_collider_right3;
 	//FPS stuff
 	int FPS_collider_down;
 	int FPS_collider_left;

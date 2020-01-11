@@ -1,0 +1,139 @@
+{
+  "scene": "test 1",
+  "directory": "data/assets/",
+  "geometries": [
+    {
+      "name": "plane_10x20",
+      "file": "plane_10x20.obj"
+    },
+    {
+      "name": "plane_40x40",
+      "file": "plane_40x40.obj"
+    },
+    {
+      "name": "suzanne",
+      "file": "cube.obj"
+    },
+    {
+      "name": "puck",
+      "file": "puck.obj"
+    }
+
+  ],
+  "textures": [
+    {"name": "blue", "file": "block_blue.tga"},
+    {"name": "purple", "file": "block_purple.tga"},
+    {"name": "teal", "file": "block_teal.tga"},
+    {"name": "black", "file": "block_black.tga"}
+
+  ],
+  "shaders": [
+    {"name": "phong", "vertex": "data/shaders/phong.vert", "fragment": "data/shaders/phong.frag"}
+  ],
+  "materials": [
+    {"name": "blue", "shader": "phong", "diffuse_texture":"blue"},
+    {"name": "purple", "shader": "phong", "diffuse_texture":"purple"},
+    {"name": "teal", "shader": "phong", "diffuse_texture":"teal"},
+    {"name": "black", "shader": "phong", "diffuse_texture":"black"}
+  ],
+  "lights": [
+    {
+      "name": "Light 1",
+      "position": [-100,100,50],
+      "color": [1,1,1]
+    }
+  ],
+  "entities": [
+    {
+      "name": "player",
+      "geometry": "suzanne",
+      "material": "black",
+      "transform": {
+        "translate": [ -6, 3.0, -10 ],
+        "rotate": [ 0, 0, 0 ],
+        "scale": [ 0.5, 1.2,0.9]
+      },
+      "collider": {
+        "type": "Box",
+        "center": [ 0, 0, 0 ],
+          "halfwidth": [ 0.5, 0.5,0.5]
+      }
+    },
+    {
+      "name": "playerCPU",
+      "geometry": "suzanne",
+      "material": "purple",
+      "transform": {
+      "translate": [ 2, 3.0, -10 ],
+      "rotate": [ 0, 0, 0 ],
+      "scale": [ 0.5, 1.2,0.9]
+    },
+    "collider": {
+      "type": "Box",
+      "center": [ 0, 0, 0 ],
+        "halfwidth": [ 0.5, 0.5,0.5]
+      }
+    },
+    {
+      "name": "Ball",
+      "geometry": "puck",
+      "material": "black",
+      "transform": {
+      "translate": [ -2, 3.0, -10 ],
+      "rotate": [ 0, 0, 0 ],
+      "scale": [ 0.2, 0.2,0.2]
+      },
+      "collider": {
+        "type": "Box",
+        "center": [ 0, 0, 0 ],
+        "halfwidth": [ 3,3,3]
+      }
+    },
+    {
+      "name": "floor_1",
+      "geometry": "plane_40x40",
+      "material": "blue",
+      "transform": {
+        "translate": [ 0, 0, 0 ],
+        "rotate": [ 0, 0, 0 ],
+        "scale": [ 10, 1, 10 ]
+      },
+      "collider": {
+        "type": "Box",
+        "center": [ 0, 0, 0 ],
+        "halfwidth": [ 20, 0.5, 20 ]
+      }
+    },
+    {
+      "name": "Roof",
+      "geometry": "plane_40x40",
+      "material": "blue",
+      "transform": {
+        "translate": [ 0, 33.5, 0 ],
+        "rotate": [ 0, 180, 0 ],
+        "scale": [ 10, 1, 10 ]
+      },
+      "collider": {
+        "type": "Box",
+        "center": [ 0, 0, 0 ],
+        "halfwidth": [ 20, 0.5, 20 ]
+      }
+    },
+    {
+      "name": "Wall",
+      "geometry": "plane_40x40",
+      "material": "blue",
+      "transform": {
+        "translate": [ 0, 4, -13 ],
+        "rotate": [ 90, 0, 0 ],
+        "scale": [ 10, 1, 10 ]
+      },
+      "collider": {
+        "type": "Box",
+        "center": [ 0, 0, 0 ],
+        "halfwidth": [ 20, 0.5, 20 ]
+      }
+    }
+
+  ]
+}

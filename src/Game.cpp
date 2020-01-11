@@ -13,7 +13,7 @@
 #include "BallMovement.h"
 #include "PaddleAI.h"
 #include "Parsers.h"
-
+#include <freetype/freetype.h>
 
 Game::Game() {
 
@@ -86,7 +86,7 @@ int createPaddle(std::string name_, ControlSystem& sys) {
 	//left_ray_trans.parent = ECS.getComponentID<Transform>(ent_padle); //set parent as ball entity *transform*!
 	//Collider& left_ray_collider = ECS.createComponentForEntity<Collider>(ent_left_Paddle_ray);
 	//left_ray_collider.collider_type = ColliderTypeRay;
-	//left_ray_collider.local_center = lm::vec3(0.0, 0.5, 0.0);
+	//left_ray_collider.local_center = lm::vec3(0.0, 0.25, 0.0);
 	//left_ray_collider.direction = lm::vec3(1.0, 0.0, 0.0);
 	//left_ray_collider.max_distance = 2.0f;
 	int ent_right_Paddle_ray = ECS.createEntity("RightPaddleRay");
@@ -97,7 +97,7 @@ int createPaddle(std::string name_, ControlSystem& sys) {
 	right_ray_collider.local_center = lm::vec3(0.0, 0.0, 0.0);
 	right_ray_collider.direction = lm::vec3(1.0, 0.0, 0.0);
 	right_ray_collider.max_distance = 2.0f;
-//	sys.Ball_collider_left = ECS.getComponentID<Collider>(ent_left_Paddle_ray);
+	//sys.Ball_collider_left = ECS.getComponentID<Collider>(ent_left_Paddle_ray);
 	sys.Ball_collider_right = ECS.getComponentID<Collider>(ent_right_Paddle_ray);
 	return ent_padle;
 }
@@ -114,16 +114,17 @@ int createPaddleCPU(std::string name_, ControlSystem& sys) {
 	left_ray_collider.local_center = lm::vec3(0.0, 0.0, 0.0);
 	left_ray_collider.direction = lm::vec3(-1.0, 0.0, 0.0);
 	left_ray_collider.max_distance = 2.0f;
+
 	//int ent_right_Paddle_ray = ECS.createEntity("RightPaddleRay");
 	//Transform& right_ray_trans = ECS.createComponentForEntity<Transform>(ent_right_Paddle_ray);
 	//right_ray_trans.parent = ECS.getComponentID<Transform>(ent_padleCPU); //set parent as player entity *transform*!
 	//Collider& right_ray_collider = ECS.createComponentForEntity<Collider>(ent_right_Paddle_ray);
 	//right_ray_collider.collider_type = ColliderTypeRay;
-	//right_ray_collider.local_center = lm::vec3(0.0, -0.5, 0.0);
+	//right_ray_collider.local_center = lm::vec3(0.0, -0.25, 0.0);
 	//right_ray_collider.direction = lm::vec3(-1.0, 0.0, 0.0);
 	//right_ray_collider.max_distance = 2.0f;
 	sys.Ball_collider_left = ECS.getComponentID<Collider>(ent_left_Paddle_ray);
-	//sys.Ball_collider_right = ECS.getComponentID<Collider>(ent_right_Paddle_ray);
+//	sys.Ball_collider_right = ECS.getComponentID<Collider>(ent_right_Paddle_ray);
 	return ent_padleCPU;
 }
 int createBall(std::string name_, ControlSystem& sys) {
@@ -137,14 +138,55 @@ int createBall(std::string name_, ControlSystem& sys) {
 	Collider& left_ray_collider = ECS.createComponentForEntity<Collider>(ent_left_ball_ray);
 	left_ray_collider.collider_type = ColliderTypeRay;
 	left_ray_collider.direction = lm::vec3(-1.0, 0.0, 0.0);
-	left_ray_collider.max_distance = 2.0f;
+	left_ray_collider.local_center = lm::vec3(0.0, 0, 0.0);
+	//left_ray_collider.max_distance = 9.0f;
 	int ent_right_ball_ray = ECS.createEntity("RightBallRay");
 	Transform& right_ray_trans = ECS.createComponentForEntity<Transform>(ent_right_ball_ray);
 	right_ray_trans.parent = ECS.getComponentID<Transform>(ent_ball); //set parent as player entity *transform*!
 	Collider& right_ray_collider = ECS.createComponentForEntity<Collider>(ent_right_ball_ray);
 	right_ray_collider.collider_type = ColliderTypeRay;
 	right_ray_collider.direction = lm::vec3(1.0, 0.0, 0.0);
-	right_ray_collider.max_distance = 2.0f;
+	//right_ray_collider.max_distance = 4.0f;
+
+
+	//int ent_left_ball_ray2 = ECS.createEntity("LeftBallRay2");
+	//Transform& left_ray_trans2 = ECS.createComponentForEntity<Transform>(ent_left_ball_ray2);
+	//left_ray_trans2.parent = ECS.getComponentID<Transform>(ent_ball); //set parent as ball entity *transform*!
+	//Collider& left_ray_collider2 = ECS.createComponentForEntity<Collider>(ent_left_ball_ray2);
+	//left_ray_collider2.collider_type = ColliderTypeRay;
+	//left_ray_collider2.local_center = lm::vec3(0.0, 0.5, 0.0);
+	//left_ray_collider2.direction = lm::vec3(-1.0, 0.0, 0.0);
+	//left_ray_collider2.max_distance = 4.0f;
+	//int ent_right_ball_ray2 = ECS.createEntity("RightBallRay2");
+	//Transform& right_ray_trans2 = ECS.createComponentForEntity<Transform>(ent_right_ball_ray2);
+	//right_ray_trans2.parent = ECS.getComponentID<Transform>(ent_ball); //set parent as player entity *transform*!
+	//Collider& right_ray_collider2 = ECS.createComponentForEntity<Collider>(ent_right_ball_ray2);
+	//right_ray_collider2.collider_type = ColliderTypeRay;
+	//right_ray_collider2.local_center = lm::vec3(0.0, 0.5, 0.0);
+	//right_ray_collider2.direction = lm::vec3(1.0, 0.0, 0.0);
+	//right_ray_collider2.max_distance = 4.0f;
+
+	//int ent_left_ball_ray3 = ECS.createEntity("LeftBallRay3");
+	//Transform& left_ray_trans3 = ECS.createComponentForEntity<Transform>(ent_left_ball_ray3);
+	//left_ray_trans3.parent = ECS.getComponentID<Transform>(ent_ball); //set parent as ball entity *transform*!
+	//Collider& left_ray_collider3 = ECS.createComponentForEntity<Collider>(ent_left_ball_ray3);
+	//left_ray_collider3.collider_type = ColliderTypeRay;
+	//left_ray_collider3.local_center = lm::vec3(0.0, -0.5, 0.0);
+	//left_ray_collider3.direction = lm::vec3(-1.0, 0.0, 0.0);
+	//left_ray_collider3.max_distance = 4.0f;
+	//int ent_right_ball_ray3 = ECS.createEntity("RightBallRay3");
+	//Transform& right_ray_trans3 = ECS.createComponentForEntity<Transform>(ent_right_ball_ray3);
+	//right_ray_trans3.parent = ECS.getComponentID<Transform>(ent_ball); //set parent as player entity *transform*!
+	//Collider& right_ray_collider3 = ECS.createComponentForEntity<Collider>(ent_right_ball_ray3);
+	//right_ray_collider3.collider_type = ColliderTypeRay;
+	//right_ray_collider3.local_center = lm::vec3(0.0, -0.5, 0.0);
+	//right_ray_collider3.direction = lm::vec3(1.0, 0.0, 0.0);
+	//right_ray_collider3.max_distance = 4.0f;
+
+	//sys.Ball_collider_left3 = ECS.getComponentID<Collider>(ent_left_ball_ray3);
+	//sys.Ball_collider_right3 = ECS.getComponentID<Collider>(ent_right_ball_ray3);
+	//sys.Ball_collider_left2 = ECS.getComponentID<Collider>(ent_left_ball_ray2);
+	//sys.Ball_collider_right2 = ECS.getComponentID<Collider>(ent_right_ball_ray2);
 	sys.Ball_collider_left = ECS.getComponentID<Collider>(ent_left_ball_ray);
 	sys.Ball_collider_right = ECS.getComponentID<Collider>(ent_right_ball_ray);
 	return ent_ball;
@@ -214,13 +256,14 @@ void Game::init() {
 
 	debug_system_.toggleimGUI();
 	//******* INIT SYSTEMS *******//
-
+	
 	//init systems except debug and scripts, which needs info about scene
 	control_system_.init();
 	graphics_system_.init();
 	scripts_system_.init(&control_system_),
 		
-	Parsers::parseJSONLevel("data/assets/Alex_level.json", graphics_system_);
+	//Parsers::parseJSONLevel("data/assets/Alex_level.json", graphics_system_);
+	Parsers::parseJSONLevel("data/assets/Pong_level.json", graphics_system_);
     //******** CREATE AND ADD RESOURCES **********//
     
     //shaders
@@ -246,8 +289,9 @@ void Game::init() {
     //******* CREATE ENTITIES AND ADD COMPONENTS *******//
 
 	//players, cameras and lights
-	int ent_light_1 = createLight("Light 1", lm::vec3(-9.0f, 4.0f, -10.0f), lm::vec3(1.0f, 1.0f, 1.0f));
-	int ent_light_2 = createLight("Light 2", lm::vec3(6.0f, 4.0f, -10.0f), lm::vec3(1.0f, 1.0f, 1.0f));
+	int ent_light_1 = createLight("Light 1", lm::vec3(-9.0f, 4.0f, -10.0f), lm::vec3(0.3f, 0.3f, 0.3f));
+	int ent_light_2 = createLight("Light 2", lm::vec3(6.0f, 4.0f, -10.0f), lm::vec3(0.3f, 0.3f, 0.3f));
+	//int ent_light_ball = createLight("Light 3", lm::vec3(-2.0f, -4.0f, -10.0f), lm::vec3(0.4f, 0.4f, 0.4f));
 	int ent_player = createPlayer(lm::vec3(-2.0f, 8.0f, -2.0f), control_system_);
     ECS.main_camera = ECS.getComponentID<Camera>(ent_player);
 	
@@ -263,11 +307,13 @@ void Game::init() {
 	
 	PaddleAI* moveScriptAI = new PaddleAI(ECS.getEntity("playerCPU"));
 	scripts_system_.registerScript(moveScriptAI);
-	//moveScriptAI->init(ballmovement);
+	
 	moveScript->init(moveScriptAI); //AI needs player info
 	BallMovement* ballmovement = new BallMovement(ECS.getEntity("Ball"));
 	scripts_system_.registerScript(ballmovement);
+
 	ballmovement->init(moveScriptAI); //AI needs puck info
+
 	
 	
 
@@ -305,7 +351,7 @@ void Game::update(float dt) {
 	graphics_system_.update(dt);
     
     //debug
-    debug_system_.update(dt);
+   // debug_system_.update(dt);
     
 }
 

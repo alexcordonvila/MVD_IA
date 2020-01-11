@@ -27,7 +27,7 @@ void ControlSystem::updateMousePosition(int new_x, int new_y) {
 void ControlSystem::update(float dt) {
 	if (control_type == ControlTypeFPS) {
 		updateFPS(dt);
-		void updatePong(float dt);
+		updatePong( dt);
 	}
 	else {
 		updateFree(dt);
@@ -73,11 +73,15 @@ void ControlSystem::updateFree(float dt) {
 void ControlSystem::updatePong(float dt) {
 	//fps control should have five ray colliders assigned
 	auto& colliders = ECS.getAllComponents<Collider>();
-//	Collider& collider_down = colliders[FPS_collider_down];
-	//Collider& collider_forward = colliders[FPS_collider_forward];
+	//Collider& collider_down = colliders[FPS_collider_down];
+//	Collider& collider_forward = colliders[FPS_collider_forward];
 	Collider& collider_Ball_left = colliders[Ball_collider_left];
 	Collider& collider_Ball_right = colliders[Ball_collider_right];
-	//Collider& collider_back = colliders[FPS_collider_back];
+	//Collider& collider_Ball_left2 = colliders[Ball_collider_left2];
+	//Collider& collider_Ball_right2 = colliders[Ball_collider_right2];
+	//Collider& collider_Ball_left3 = colliders[Ball_collider_left3];
+	//Collider& collider_Ball_right3 = colliders[Ball_collider_right3];
+	Collider& collider_back = colliders[FPS_collider_back];
 }
 
 
