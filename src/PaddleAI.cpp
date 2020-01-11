@@ -8,21 +8,13 @@ void PaddleAI::update(float dt)
 	Transform* transform;
 	transform = &ECS.getComponentFromEntity<Transform>(owner_);
 
-	//transform->translate(0, ypos * dt, 0);
-
 	//transform->position(transform->position().x, ypos, transform->position().z); //if alone, this is an unbeatable AI
 	sense(transform->position().y, ypos, y_player_pos, dt);
-	/*if (ypos > transform->position().y) {
-		transform->translate(0, yspeed * dt, 0);
-	}
-	if (ypos < transform->position().y) {
-		transform->translate(0, -yspeed * dt, 0);
-	}*/
+
 	if (reset == true) {
 		transform->position(2.0f, 3.0f, -10.0f);
 		reset = false;
 	}
-
 }
 void PaddleAI::sense(float CPUpos, float ballpos, float playerpos, float dt) //Here we only recieve data
 {
@@ -53,7 +45,6 @@ void PaddleAI::think(float CPUpos, float ballpos, float playerpos, float dt) //H
 			else {
 				act2(yspeed, 3, CPUpos, ballpos, dt);
 			}
-
 		}
 	}
 	else {			//If player and CPU are in a far "y" position AI try to hit the ball forward
@@ -79,7 +70,6 @@ void PaddleAI::act(float yspeed, float dir, float dt) //Here we only move the CP
 }
 void PaddleAI::act2(float yspeed, int zone, float CPUpos, float ballpos, float dt) //Here we move the CPU paddle to hit with the zone 3 thepuck
 {
-	
 	float cpu_ball_dist = abs(CPUpos - ballpos);
 	if (zone == 1) {
 		if (cpu_ball_dist > 0.5f) {
@@ -116,8 +106,6 @@ void PaddleAI::act2(float yspeed, int zone, float CPUpos, float ballpos, float d
 				else if ((CPUpos - ballpos) < 0) {
 					transform->translate(0, yspeed * 1.0 * dt, 0);
 				}
-			
 			}
-		
 	}
 }
